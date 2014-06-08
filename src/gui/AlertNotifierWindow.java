@@ -15,8 +15,16 @@ public class AlertNotifierWindow implements WindowListener, ChangeListener, Acti
 	private JTabbedPane m_mainTabbedPane;
     private JTable m_activeAlertsTable;
     private JScrollPane m_activeAlertsScrollPane;
+    private JTable m_activeOutbreaksTable;
+    private JScrollPane m_activeOutbreaksScrollPane;
+    private JTable m_activeInvasionsTable;
+    private JScrollPane m_activeInvasionsScrollPane;
     private JTable m_filteredAlertsTable;
     private JScrollPane m_filteredAlertsScrollPane;
+    private JTable m_filteredOutbreaksTable;
+    private JScrollPane m_filteredOutbreaksScrollPane;
+    private JTable m_filteredInvasionsTable;
+    private JScrollPane m_filteredInvasionsScrollPane;
     private JTextArea m_consoleText;
 	private Font m_consoleFont;
 	private JScrollPane m_consoleScrollPane;
@@ -83,6 +91,8 @@ public class AlertNotifierWindow implements WindowListener, ChangeListener, Acti
 	private boolean m_autoSizeColumns;
 	private Thread m_updateThread;
 	
+	public final static int SCROLL_INCREMENT = 16;
+	
 	public AlertNotifierWindow() {
 		m_frame = new JFrame("Warframe Alert Notifier");
 		m_frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -136,7 +146,11 @@ public class AlertNotifierWindow implements WindowListener, ChangeListener, Acti
 					
 					// update windows
 					updateActiveAlertsTable(m_autoSizeColumns);
+					updateActiveOutbreaksTable(m_autoSizeColumns);
+					updateActiveInvasionsTable(m_autoSizeColumns);
 					updateFilteredAlertsTable(m_autoSizeColumns);
+					updateFilteredOutbreaksTable(m_autoSizeColumns);
+					updateFilteredInvasionsTable(m_autoSizeColumns);
 					
 					// only autosize columns once
 					m_autoSizeColumns = false;
@@ -367,7 +381,54 @@ public class AlertNotifierWindow implements WindowListener, ChangeListener, Acti
 		m_activeAlertsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		m_activeAlertsTable.setModel(activeAlertsTableModel);
 		m_activeAlertsScrollPane.setViewportView(m_activeAlertsTable);
+		m_activeAlertsScrollPane.getVerticalScrollBar().setUnitIncrement(SCROLL_INCREMENT);
 		m_mainTabbedPane.addTab("Active Alerts", null, m_activeAlertsScrollPane, "Displays all currently active alerts");
+		
+		// initialize the active outbreaks tab
+		m_activeOutbreaksScrollPane = new JScrollPane();
+		m_activeOutbreaksTable = new JTable() {
+			private static final long serialVersionUID = 1L;
+			
+			public boolean isCellEditable(int row, int col) {
+				return false;
+			}
+		};
+		
+		DefaultTableModel activeOutbreaksTableModel = new DefaultTableModel(
+			null,
+			new String[] {
+				"Status", "Location", "Planet", "Reward"
+			}
+		);
+		
+		m_activeOutbreaksTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		m_activeOutbreaksTable.setModel(activeOutbreaksTableModel);
+		m_activeOutbreaksScrollPane.setViewportView(m_activeOutbreaksTable);
+		m_activeOutbreaksScrollPane.getVerticalScrollBar().setUnitIncrement(SCROLL_INCREMENT);
+		m_mainTabbedPane.addTab("Active Outbreaks", null, m_activeOutbreaksScrollPane, "Displays all currently active outbreaks");
+		
+		// initialize the active invasions tab
+		m_activeInvasionsScrollPane = new JScrollPane();
+		m_activeInvasionsTable = new JTable() {
+			private static final long serialVersionUID = 1L;
+			
+			public boolean isCellEditable(int row, int col) {
+				return false;
+			}
+		};
+		
+		DefaultTableModel activeInvasionsTableModel = new DefaultTableModel(
+			null,
+			new String[] {
+				"Status", "Location", "Planet", "Corpus Reward", "Grineer Reward"
+			}
+		);
+		
+		m_activeInvasionsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		m_activeInvasionsTable.setModel(activeInvasionsTableModel);
+		m_activeInvasionsScrollPane.setViewportView(m_activeInvasionsTable);
+		m_activeInvasionsScrollPane.getVerticalScrollBar().setUnitIncrement(SCROLL_INCREMENT);
+		m_mainTabbedPane.addTab("Active Invasions", null, m_activeInvasionsScrollPane, "Displays all currently active invasions");
 		
 		// initialize the filtered alerts tab
 		m_filteredAlertsScrollPane = new JScrollPane();
@@ -389,7 +450,54 @@ public class AlertNotifierWindow implements WindowListener, ChangeListener, Acti
 		m_filteredAlertsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		m_filteredAlertsTable.setModel(filteredAlertsTableModel);
 		m_filteredAlertsScrollPane.setViewportView(m_filteredAlertsTable);
+		m_filteredAlertsScrollPane.getVerticalScrollBar().setUnitIncrement(SCROLL_INCREMENT);
 		m_mainTabbedPane.addTab("Filtered Alerts", null, m_filteredAlertsScrollPane, "Displays all currently filtered alerts");
+		
+		// initialize the filtered outbreaks tab
+		m_filteredOutbreaksScrollPane = new JScrollPane();
+		m_filteredOutbreaksTable = new JTable() {
+			private static final long serialVersionUID = 1L;
+			
+			public boolean isCellEditable(int row, int col) {
+				return false;
+			}
+		};
+		
+		DefaultTableModel filteredOutbreaksTableModel = new DefaultTableModel(
+			null,
+			new String[] {
+				"Status", "Location", "Planet", "Reward"
+			}
+		);
+		
+		m_filteredOutbreaksTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		m_filteredOutbreaksTable.setModel(filteredOutbreaksTableModel);
+		m_filteredOutbreaksScrollPane.setViewportView(m_filteredOutbreaksTable);
+		m_filteredOutbreaksScrollPane.getVerticalScrollBar().setUnitIncrement(SCROLL_INCREMENT);
+		m_mainTabbedPane.addTab("Filtered Outbreaks", null, m_filteredOutbreaksScrollPane, "Displays all currently filtered outbreaks");
+
+		//initialize the filtered invasions tab
+		m_filteredInvasionsScrollPane = new JScrollPane();
+		m_filteredInvasionsTable = new JTable() {
+			private static final long serialVersionUID = 1L;
+			
+			public boolean isCellEditable(int row, int col) {
+				return false;
+			}
+		};
+		
+		DefaultTableModel filteredInvasionsTableModel = new DefaultTableModel(
+			null,
+			new String[] {
+				"Status", "Location", "Planet", "Corpus Reward", "Grineer Reward"
+			}
+		);
+		
+		m_filteredInvasionsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		m_filteredInvasionsTable.setModel(filteredInvasionsTableModel);
+		m_filteredInvasionsScrollPane.setViewportView(m_filteredInvasionsTable);
+		m_filteredInvasionsScrollPane.getVerticalScrollBar().setUnitIncrement(SCROLL_INCREMENT);
+		m_mainTabbedPane.addTab("Filtered Invasions", null, m_filteredInvasionsScrollPane, "Displays all currently filtered invasions");
 		
 		// initialize the console tab
 		m_consoleText = new JTextArea();
@@ -532,6 +640,8 @@ public class AlertNotifierWindow implements WindowListener, ChangeListener, Acti
 			if(newAlertURL.length() == 0) { return; }
 			
 			AlertNotifier.settings.alertURL = newAlertURL;
+			
+			AlertNotifier.alertMonitor.forceUpdate();
 		}
 		// change the alert update frequency
 		else if(e.getSource() == m_alertsAlertUpdateFrequencyMenuItem) {
@@ -897,7 +1007,7 @@ public class AlertNotifierWindow implements WindowListener, ChangeListener, Acti
 		}
 		// display help message
 		else if(e.getSource() == m_helpAboutMenuItem) {
-			JOptionPane.showMessageDialog(m_frame, "Warframe Alert Notifier\nCreated by Kevin Scroggins (a.k.a. nitro_glycerine)\nE-Mail: nitro404@gmail.com\nWebsite: http://www.nitro404.com/", "About Warframe Alert Notifier", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(m_frame, "Warframe Alert Notifier Version " + AlertNotifier.VERSION + "\nCreated by Kevin Scroggins (a.k.a. nitro_glycerine)\nE-Mail: nitro404@gmail.com\nWebsite: http://www.nitro404.com/", "About Warframe Alert Notifier", JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
 	
@@ -956,6 +1066,89 @@ public class AlertNotifierWindow implements WindowListener, ChangeListener, Acti
 		catch(Exception e) { e.printStackTrace(); }
 	}
 	
+	private void updateActiveOutbreaksTable(boolean autoSizeColumns) {
+		try {
+			// get the selected table cell
+			int x = m_activeOutbreaksTable.getSelectedColumn();
+			int y = m_activeOutbreaksTable.getSelectedRow();
+			
+			// get the table's model and clear it safely
+			DefaultTableModel tableModel = (DefaultTableModel) m_activeOutbreaksTable.getModel();
+			tableModel.getDataVector().removeAllElements();
+			tableModel.fireTableDataChanged();
+			
+			// get all of the active outbreaks and add them to the table model
+			Outbreak b = null;
+			for(int i=AlertNotifier.alertMonitor.numberOfOutbreaks()-1;i>=0;i--) {
+				b = AlertNotifier.alertMonitor.getOutbreak(i);
+				tableModel.addRow(new String[] {
+					b.isExpired() ? "Expired" : "Active",
+					b.getLocation(),
+					b.getPlanet(),
+					b.getCredits() > 0 ? Integer.toString(b.getCredits()) : b.getRewardInformation()
+				});
+			}
+			
+			// if the previous selection is still valid, re-select the previously selected cell
+			if(x >= 0 && y >= 0 && x < m_activeOutbreaksTable.getColumnCount() && y < m_activeOutbreaksTable.getRowCount()) { 
+				m_activeOutbreaksTable.getSelectionModel().setSelectionInterval(y, y);
+				m_activeOutbreaksTable.getColumnModel().getSelectionModel().setSelectionInterval(x, x);
+			}
+			
+			// if the columns should be autosized, then autosize them using the table renderer
+			if(autoSizeColumns) {
+				final TableCellRenderer renderer = m_activeOutbreaksTable.getTableHeader().getDefaultRenderer();
+				
+				for(int i=0;i<m_activeOutbreaksTable.getColumnCount();i++) {
+					m_activeOutbreaksTable.getColumnModel().getColumn(i).setPreferredWidth(renderer.getTableCellRendererComponent(m_activeOutbreaksTable, m_activeOutbreaksTable.getModel().getColumnName(i), false, false, 0, i).getPreferredSize().width);
+				}
+			}
+		}
+		catch(Exception e) { e.printStackTrace(); }
+	}
+	
+	private void updateActiveInvasionsTable(boolean autoSizeColumns) {
+		try {
+			// get the selected table cell
+			int x = m_activeInvasionsTable.getSelectedColumn();
+			int y = m_activeInvasionsTable.getSelectedRow();
+			
+			// get the table's model and clear it safely
+			DefaultTableModel tableModel = (DefaultTableModel) m_activeInvasionsTable.getModel();
+			tableModel.getDataVector().removeAllElements();
+			tableModel.fireTableDataChanged();
+			
+			// get all of the active invasions and add them to the table model
+			Invasion v = null;
+			for(int i=AlertNotifier.alertMonitor.numberOfInvasions()-1;i>=0;i--) {
+				v = AlertNotifier.alertMonitor.getInvasion(i);
+				tableModel.addRow(new String[] {
+					v.isExpired() ? "Expired" : "Active",
+					v.getLocation(),
+					v.getPlanet(),
+					v.getCredits(FactionType.Corpus) > 0 ? Integer.toString(v.getCredits(FactionType.Corpus)) : v.getRewardInformation(FactionType.Corpus),
+					v.getCredits(FactionType.Grineer) > 0 ? Integer.toString(v.getCredits(FactionType.Grineer)) : v.getRewardInformation(FactionType.Grineer)
+				});
+			}
+			
+			// if the previous selection is still valid, re-select the previously selected cell
+			if(x >= 0 && y >= 0 && x < m_activeInvasionsTable.getColumnCount() && y < m_activeInvasionsTable.getRowCount()) { 
+				m_activeInvasionsTable.getSelectionModel().setSelectionInterval(y, y);
+				m_activeInvasionsTable.getColumnModel().getSelectionModel().setSelectionInterval(x, x);
+			}
+			
+			// if the columns should be autosized, then autosize them using the table renderer
+			if(autoSizeColumns) {
+				final TableCellRenderer renderer = m_activeInvasionsTable.getTableHeader().getDefaultRenderer();
+				
+				for(int i=0;i<m_activeInvasionsTable.getColumnCount();i++) {
+					m_activeInvasionsTable.getColumnModel().getColumn(i).setPreferredWidth(renderer.getTableCellRendererComponent(m_activeInvasionsTable, m_activeInvasionsTable.getModel().getColumnName(i), false, false, 0, i).getPreferredSize().width);
+				}
+			}
+		}
+		catch(Exception e) { e.printStackTrace(); }
+	}
+	
 	private void updateFilteredAlertsTable(boolean autoSizeColumns) {
 		try {
 			// get the selected table cell
@@ -995,6 +1188,89 @@ public class AlertNotifierWindow implements WindowListener, ChangeListener, Acti
 				
 				for(int i=0;i<m_filteredAlertsTable.getColumnCount();i++) {
 					m_filteredAlertsTable.getColumnModel().getColumn(i).setPreferredWidth(renderer.getTableCellRendererComponent(m_filteredAlertsTable, m_filteredAlertsTable.getModel().getColumnName(i), false, false, 0, i).getPreferredSize().width);
+				}
+			}
+		}
+		catch(Exception e) { e.printStackTrace(); }
+	}
+	
+	private void updateFilteredOutbreaksTable(boolean autoSizeColumns) {
+		try {
+			// get the selected table cell
+			int x = m_filteredOutbreaksTable.getSelectedColumn();
+			int y = m_filteredOutbreaksTable.getSelectedRow();
+			
+			// get the table's model and clear it safely
+			DefaultTableModel tableModel = (DefaultTableModel) m_filteredOutbreaksTable.getModel();
+			tableModel.getDataVector().removeAllElements();
+			tableModel.fireTableDataChanged();
+			
+			// get all of the filtered outbreaks and add them to the table model
+			Outbreak b = null;
+			for(int i=AlertNotifier.alertMonitor.numberOfFilteredOutbreaks()-1;i>=0;i--) {
+				b = AlertNotifier.alertMonitor.getFilteredOutbreak(i);
+				tableModel.addRow(new String[] {
+					b.isExpired() ? "Expired" : "Active",
+					b.getLocation(),
+					b.getPlanet(),
+					b.getCredits() > 0 ? Integer.toString(b.getCredits()) : b.getRewardInformation()
+				});
+			}
+			
+			// if the previous selection is still valid, re-select the previously selected cell
+			if(x >= 0 && y >= 0 && x < m_filteredOutbreaksTable.getColumnCount() && y < m_filteredOutbreaksTable.getRowCount()) { 
+				m_filteredOutbreaksTable.getSelectionModel().setSelectionInterval(y, y);
+				m_filteredOutbreaksTable.getColumnModel().getSelectionModel().setSelectionInterval(x, x);
+			}
+			
+			// if the columns should be autosized, then autosize them using the table renderer
+			if(autoSizeColumns) {
+				final TableCellRenderer renderer = m_filteredOutbreaksTable.getTableHeader().getDefaultRenderer();
+				
+				for(int i=0;i<m_filteredOutbreaksTable.getColumnCount();i++) {
+					m_filteredOutbreaksTable.getColumnModel().getColumn(i).setPreferredWidth(renderer.getTableCellRendererComponent(m_filteredOutbreaksTable, m_filteredOutbreaksTable.getModel().getColumnName(i), false, false, 0, i).getPreferredSize().width);
+				}
+			}
+		}
+		catch(Exception e) { e.printStackTrace(); }
+	}
+	
+	private void updateFilteredInvasionsTable(boolean autoSizeColumns) {
+		try {
+			// get the selected table cell
+			int x = m_filteredInvasionsTable.getSelectedColumn();
+			int y = m_filteredInvasionsTable.getSelectedRow();
+			
+			// get the table's model and clear it safely
+			DefaultTableModel tableModel = (DefaultTableModel) m_filteredInvasionsTable.getModel();
+			tableModel.getDataVector().removeAllElements();
+			tableModel.fireTableDataChanged();
+			
+			// get all of the filtered invasions and add them to the table model
+			Invasion v = null;
+			for(int i=AlertNotifier.alertMonitor.numberOfFilteredInvasions()-1;i>=0;i--) {
+				v = AlertNotifier.alertMonitor.getFilteredInvasion(i);
+				tableModel.addRow(new String[] {
+					v.isExpired() ? "Expired" : "Active",
+					v.getLocation(),
+					v.getPlanet(),
+					v.getCredits(FactionType.Corpus) > 0 ? Integer.toString(v.getCredits(FactionType.Corpus)) : v.getRewardInformation(FactionType.Corpus),
+					v.getCredits(FactionType.Grineer) > 0 ? Integer.toString(v.getCredits(FactionType.Grineer)) : v.getRewardInformation(FactionType.Grineer)
+				});
+			}
+			
+			// if the previous selection is still valid, re-select the previously selected cell
+			if(x >= 0 && y >= 0 && x < m_filteredInvasionsTable.getColumnCount() && y < m_filteredInvasionsTable.getRowCount()) { 
+				m_filteredInvasionsTable.getSelectionModel().setSelectionInterval(y, y);
+				m_filteredInvasionsTable.getColumnModel().getSelectionModel().setSelectionInterval(x, x);
+			}
+			
+			// if the columns should be autosized, then autosize them using the table renderer
+			if(autoSizeColumns) {
+				final TableCellRenderer renderer = m_filteredInvasionsTable.getTableHeader().getDefaultRenderer();
+				
+				for(int i=0;i<m_filteredInvasionsTable.getColumnCount();i++) {
+					m_filteredInvasionsTable.getColumnModel().getColumn(i).setPreferredWidth(renderer.getTableCellRendererComponent(m_filteredInvasionsTable, m_filteredInvasionsTable.getModel().getColumnName(i), false, false, 0, i).getPreferredSize().width);
 				}
 			}
 		}

@@ -8,7 +8,7 @@ import console.*;
 import audio.*;
 import gui.*;
 
-public class AlertNotifier implements AlertListener {
+public class AlertNotifier implements AlertListener, OutbreakListener, InvasionListener {
 
 	public static AlertNotifier instance;
 	public static AlertNotifierWindow alertNotifierWindow;
@@ -19,9 +19,12 @@ public class AlertNotifier implements AlertListener {
 	public static FilterCollection filters;
 	public static AlertMonitor alertMonitor;
 	private Sound m_alertSound;
+	private Sound m_outbreakSound;
+	private Sound m_invasionSound;
 	private boolean m_initialized;
 	private boolean m_headerAddedToAlertsLogFile;
 	private boolean m_headerAddedToFilteredAlertsLogFile;
+	final public static String VERSION = "1.1.2";
 	
 	public AlertNotifier() {
 		alertNotifierWindow = new AlertNotifierWindow();
@@ -40,6 +43,8 @@ public class AlertNotifier implements AlertListener {
 		alertMonitor = new AlertMonitor();
 		
 		m_alertSound = null;
+		m_outbreakSound = null;
+		m_invasionSound = null;
 	}
 
 	public boolean initialize(String[] args) {
@@ -106,6 +111,9 @@ public class AlertNotifier implements AlertListener {
 		}
 		
 		m_alertSound = sounds.getSound("Alert");
+// TODO: add custom sounds for outbreaks and invasions
+		m_outbreakSound = sounds.getSound("Alert");
+		m_invasionSound = sounds.getSound("Alert");
 		if(m_alertSound == null) {
 			console.writeLine("Default alert sound missing!");
 		}
@@ -116,6 +124,8 @@ public class AlertNotifier implements AlertListener {
 		
 		console.addTarget(alertNotifierWindow);
 		alertMonitor.addAlertListener(this);
+		alertMonitor.addOutbreakListener(this);
+		alertMonitor.addInvasionListener(this);
 		
 		if(!alertNotifierWindow.initialize()) {
 			JOptionPane.showMessageDialog(null, "Failed to initialize alert window!", "Alert Window Init Failed", JOptionPane.ERROR_MESSAGE);
@@ -164,6 +174,18 @@ public class AlertNotifier implements AlertListener {
 		m_alertSound.play(settings.volume);
 	}
 	
+	public void playOutbreakSound() {
+		if(m_outbreakSound == null || !settings.soundsEnabled) { return; }
+		
+		m_outbreakSound.play(settings.volume);
+	}
+	
+	public void playInvasionSound() {
+		if(m_invasionSound == null || !settings.soundsEnabled) { return; }
+		
+		m_invasionSound.play(settings.volume);
+	}
+	
 	public void notifyNewAlert(Alert a) {
 		if(settings.logAlerts) {
 			addHeaderToAlertsLogFile();
@@ -171,6 +193,30 @@ public class AlertNotifier implements AlertListener {
 				console.writeLine("Failed to log alert to file: " + settings.alertsLogFileName);
 			}
 		}
+	}
+	
+	public void notifyNewOutbreak(Outbreak b) {
+// TODO: add logging for new outbreaks
+/*
+		if(settings.logOutbreaks) {
+			addHeaderToOutbreaksLogFile();
+			if(!appendOutbreakToFile(b, settings.outbreaksLogFileName)) {
+				console.writeLine("Failed to log outbreak to file: " + settings.outbreaksLogFileName);
+			}
+		}
+*/
+	}
+	
+	public void notifyNewInvasion(Invasion v) {
+// TODO: add logging for new invasions
+/*
+		if(settings.logInvasions) {
+			addHeaderToInvasionsLogFile();
+			if(!appendInvasionToFile(v, settings.invasionsLogFileName)) {
+				console.writeLine("Failed to log invasion to file: " + settings.invasionsLogFileName);
+			}
+		}
+*/
 	}
 	
 	public void notifyFilteredAlert(Alert a) {
@@ -182,6 +228,32 @@ public class AlertNotifier implements AlertListener {
 		}
 		
 		playAlertSound();
+	}
+	
+	public void notifyFilteredOutbreak(Outbreak b) {
+// TODO: add logging for filtered outbreaks
+/*
+		if(settings.logFilteredOutbreaks) {
+			addHeaderToFilteredOutbreaksLogFile();
+			if(!appendOutbreakToFile(b, settings.filteredOutbreaksLogFileName)) {
+				console.writeLine("Failed to log filtered outbreak to file: " + settings.filteredOutbreaksLogFileName);
+			}
+		}
+*/
+		playOutbreakSound();
+	}
+	
+	public void notifyFilteredInvasion(Invasion v) {
+// TODO: add logging for filtered invasions
+/*
+		if(settings.logFilteredInvasions) {
+			addHeaderToFilteredInvasionsLogFile();
+			if(!appendInvasionToFile(v, settings.filteredInvasionsLogFileName)) {
+				console.writeLine("Failed to log filtered invasion to file: " + settings.filteredInvasionsLogFileName);
+			}
+		}
+*/
+		playInvasionSound();
 	}
 	
 	private boolean addHeaderToAlertsLogFile() {

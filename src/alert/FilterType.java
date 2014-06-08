@@ -4,7 +4,6 @@ import exception.*;
 
 public enum FilterType {
 	Credits,
-	Categories,
 	Rewards;
 	
 	public static FilterType parseFrom(String data) throws InvalidFilterException {

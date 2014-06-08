@@ -11,13 +11,24 @@ import exception.*;
 public class AlertMonitor {
 	
 	private Vector<Alert> m_alerts;
+	private Vector<Outbreak> m_outbreaks;
+	private Vector<Invasion> m_invasions;
 	private Vector<Alert> m_filteredAlerts;
+	private Vector<Outbreak> m_filteredOutbreaks;
+	private Vector<Invasion> m_filteredInvasions;
 	private Vector<AlertListener> m_alertListeners;
+	private Vector<OutbreakListener> m_outbreakListeners;
+	private Vector<InvasionListener> m_invasionListeners;
 	private boolean m_running;
 	private Thread m_alertUpdateThread;
 	
+	private static String ALERT = "Alert";
+	private static String INVASION = "Invasion";
+	private static String OUTBREAK = "Outbreak";
+	private static String GUID = "guid";
 	private static String TITLE = "title";
 	private static String LINK = "link";
+	private static String AUTHOR = "author";
 	private static String DESCRIPTION = "description";
 	private static String ITEM = "item";
 	private static String FACTION = "faction";
@@ -26,8 +37,15 @@ public class AlertMonitor {
 	
 	public AlertMonitor() {
 		m_alerts = new Vector<Alert>();
+		m_outbreaks = new Vector<Outbreak>();
+		m_invasions = new Vector<Invasion>();
 		m_filteredAlerts = new Vector<Alert>();
+		m_filteredOutbreaks = new Vector<Outbreak>();
+		m_filteredInvasions = new Vector<Invasion>();
+		
 		m_alertListeners = new Vector<AlertListener>();
+		m_outbreakListeners = new Vector<OutbreakListener>();
+		m_invasionListeners = new Vector<InvasionListener>();
 		
 		m_running = false;
 		
@@ -125,7 +143,7 @@ public class AlertMonitor {
 	
 	public void clearExpiredAlerts() {
 		for(int i=0;i<m_alerts.size();i++) {
-			if(m_alerts.elementAt(i).getTimeLeftInMilliseconds() <= 0L) {
+			if(m_alerts.elementAt(i).isExpired()) {
 				m_alerts.remove(i);
 				
 				i--;
@@ -177,7 +195,7 @@ public class AlertMonitor {
 	
 	public void clearExpiredFilteredAlerts() {
 		for(int i=0;i<m_filteredAlerts.size();i++) {
-			if(m_filteredAlerts.elementAt(i).getTimeLeftInMilliseconds() <= 0L) {
+			if(m_filteredAlerts.elementAt(i).isExpired()) {
 				m_filteredAlerts.remove(i);
 				
 				i--;
@@ -241,6 +259,331 @@ public class AlertMonitor {
 		}
 	}
 	
+	public int numberOfOutbreaks() {
+		return m_outbreaks.size();
+	}
+	
+	public Outbreak getOutbreak(int index) {
+		if(index < 0 || index >= m_outbreaks.size()) { return null; }
+		return m_outbreaks.elementAt(index);
+	}
+	
+	public boolean hasOutbreak(Outbreak b) {
+		if(b == null) { return false; }
+		return m_outbreaks.contains(b);
+	}
+	
+	public int indexOfOutbreak(Outbreak b) {
+		if(b == null) { return -1; }
+		return m_outbreaks.indexOf(b);
+	}
+	
+	public boolean addOutbreak(Outbreak b) {
+		if(hasOutbreak(b)) { return false; }
+		
+		m_outbreaks.add(b);
+		
+		handleNewOutbreak(b);
+		
+		return true;
+	}
+	
+	public boolean removeOutbreak(int index) {
+		if(index < 0 || index >= m_outbreaks.size()) { return false; }
+		m_outbreaks.remove(index);
+		return true;
+	}
+	
+	public boolean removeOutbreak(Outbreak b) {
+		if(b == null) { return false; }
+		return m_outbreaks.remove(b);
+	}
+	
+	public void clearOutbreaks() {
+		m_outbreaks.clear();
+	}
+	
+	public void clearExpiredOutbreaks() {
+		for(int i=0;i<m_outbreaks.size();i++) {
+			if(m_outbreaks.elementAt(i).isExpired()) {
+				m_outbreaks.remove(i);
+				
+				i--;
+			}
+		}
+	}
+	
+	public int numberOfFilteredOutbreaks() {
+		return m_filteredOutbreaks.size();
+	}
+	
+	public Outbreak getFilteredOutbreak(int index) {
+		if(index < 0 || index >= m_filteredOutbreaks.size()) { return null; }
+		return m_filteredOutbreaks.elementAt(index);
+	}
+	
+	public boolean hasFilteredOutbreak(Outbreak b) {
+		if(b == null) { return false; }
+		return m_filteredOutbreaks.contains(b);
+	}
+	
+	public int indexOfFilteredOutbreak(Outbreak b) {
+		if(b == null) { return -1; }
+		return m_filteredOutbreaks.indexOf(b);
+	}
+	
+	public boolean addFilteredOutbreak(Outbreak b) {
+		if(hasFilteredOutbreak(b)) { return false; }
+		
+		m_filteredOutbreaks.add(b);
+		
+		return true;
+	}
+	
+	public boolean removeFilteredOutbreak(int index) {
+		if(index < 0 || index >= m_filteredOutbreaks.size()) { return false; }
+		m_filteredOutbreaks.remove(index);
+		return true;
+	}
+	
+	public boolean removeFilteredOutbreak(Outbreak b) {
+		if(b == null) { return false; }
+		return m_filteredOutbreaks.remove(b);
+	}
+	
+	public void clearFilteredOutbreaks() {
+		m_filteredOutbreaks.clear();
+	}
+	
+	public void clearExpiredFilteredOutbreaks() {
+		for(int i=0;i<m_filteredOutbreaks.size();i++) {
+			if(m_filteredOutbreaks.elementAt(i).isExpired()) {
+				m_filteredOutbreaks.remove(i);
+				
+				i--;
+			}
+		}
+	}
+	
+	public int numberOfOutbreakListeners() {
+		return m_outbreakListeners.size();
+	}
+	
+	public OutbreakListener getOutbreakListener(int index) {
+		if(index < 0 || index >= m_outbreakListeners.size()) { return null; }
+		return m_outbreakListeners.elementAt(index);
+	}
+	
+	public boolean hasOutbreakListener(OutbreakListener b) {
+		return m_outbreakListeners.contains(b);
+	}
+	
+	public int indexOfOutbreakListener(OutbreakListener b) {
+		return m_outbreakListeners.indexOf(b);
+	}
+	
+	public boolean addOutbreakListener(OutbreakListener b) {
+		if(b == null || m_outbreakListeners.contains(b)) { return false; }
+		
+		m_outbreakListeners.add(b);
+		
+		return true;
+	}
+	
+	public boolean removeOutbreakListener(int index) {
+		if(index < 0 || index >= m_outbreakListeners.size()) { return false; }
+		m_outbreakListeners.remove(index);
+		return true;
+	}
+	
+	public boolean removeOutbreakListener(OutbreakListener b) {
+		if(b == null) { return false; }
+		return m_outbreakListeners.remove(b);
+	}
+	
+	public void clearOutbreakListeners() {
+		m_outbreakListeners.clear();
+	}
+	
+	public void handleNewOutbreak(Outbreak b) {
+		if(b == null) { return; }
+		
+		for(int i=0;i<m_outbreakListeners.size();i++) {
+			m_outbreakListeners.elementAt(i).notifyNewOutbreak(b);
+		}
+		
+		if(AlertNotifier.filters.filterOutbreak(b)) {
+			addFilteredOutbreak(b);
+			
+			for(int i=0;i<m_outbreakListeners.size();i++) {
+				m_outbreakListeners.elementAt(i).notifyFilteredOutbreak(b);
+			}
+		}
+	}
+	
+	public int numberOfInvasions() {
+		return m_invasions.size();
+	}
+	
+	public Invasion getInvasion(int index) {
+		if(index < 0 || index >= m_invasions.size()) { return null; }
+		return m_invasions.elementAt(index);
+	}
+	
+	public boolean hasInvasion(Invasion i) {
+		if(i == null) { return false; }
+
+		return m_invasions.contains(i);
+	}
+	
+	public int indexOfInvasion(Invasion i) {
+		if(i == null) { return -1; }
+		return m_invasions.indexOf(i);
+	}
+	
+	public boolean addInvasion(Invasion i) {
+		if(hasInvasion(i)) { return false; }
+		
+		m_invasions.add(i);
+		
+		handleNewInvasion(i);
+		
+		return true;
+	}
+	
+	public boolean removeInvasion(int index) {
+		if(index < 0 || index >= m_invasions.size()) { return false; }
+		m_invasions.remove(index);
+		return true;
+	}
+	
+	public boolean removeInvasion(Invasion i) {
+		if(i == null) { return false; }
+		return m_invasions.remove(i);
+	}
+	
+	public void clearInvasions() {
+		m_invasions.clear();
+	}
+	
+	public void clearExpiredInvasions() {
+		for(int i=0;i<m_invasions.size();i++) {
+			if(m_invasions.elementAt(i).isExpired()) {
+				m_invasions.remove(i);
+				
+				i--;
+			}
+		}
+	}
+	
+	public int numberOfFilteredInvasions() {
+		return m_filteredInvasions.size();
+	}
+	
+	public Invasion getFilteredInvasion(int index) {
+		if(index < 0 || index >= m_filteredInvasions.size()) { return null; }
+		return m_filteredInvasions.elementAt(index);
+	}
+	
+	public boolean hasFilteredInvasion(Invasion i) {
+		if(i == null) { return false; }
+		return m_filteredInvasions.contains(i);
+	}
+	
+	public int indexOfFilteredInvasion(Invasion i) {
+		if(i == null) { return -1; }
+		return m_filteredInvasions.indexOf(i);
+	}
+	
+	public boolean addFilteredInvasion(Invasion i) {
+		if(hasFilteredInvasion(i)) { return false; }
+		
+		m_filteredInvasions.add(i);
+		
+		return true;
+	}
+	
+	public boolean removeFilteredInvasions(int index) {
+		if(index < 0 || index >= m_filteredInvasions.size()) { return false; }
+		m_filteredInvasions.remove(index);
+		return true;
+	}
+	
+	public boolean removeFilteredInvasion(Invasion i) {
+		if(i == null) { return false; }
+		return m_filteredInvasions.remove(i);
+	}
+	
+	public void clearFilteredInvasions() {
+		m_filteredInvasions.clear();
+	}
+	
+	public void clearExpiredFilteredInvasions() {
+		for(int i=0;i<m_filteredInvasions.size();i++) {
+			if(m_filteredInvasions.elementAt(i).isExpired()) {
+				m_filteredInvasions.remove(i);
+				
+				i--;
+			}
+		}
+	}
+	
+	public int numberOfInvasionListeners() {
+		return m_invasionListeners.size();
+	}
+	
+	public InvasionListener getInvasionListener(int index) {
+		if(index < 0 || index >= m_invasionListeners.size()) { return null; }
+		return m_invasionListeners.elementAt(index);
+	}
+	
+	public boolean hasInvasionListener(InvasionListener i) {
+		return m_invasionListeners.contains(i);
+	}
+	
+	public int indexOfInvasionListener(InvasionListener i) {
+		return m_invasionListeners.indexOf(i);
+	}
+	
+	public boolean addInvasionListener(InvasionListener i) {
+		if(i == null || m_invasionListeners.contains(i)) { return false; }
+		
+		m_invasionListeners.add(i);
+		
+		return true;
+	}
+	
+	public boolean removeInvasionListener(int index) {
+		if(index < 0 || index >= m_invasionListeners.size()) { return false; }
+		m_invasionListeners.remove(index);
+		return true;
+	}
+	
+	public boolean removeInvasionListener(InvasionListener i) {
+		if(i == null) { return false; }
+		return m_invasionListeners.remove(i);
+	}
+	
+	public void clearInvasionListeners() {
+		m_invasionListeners.clear();
+	}
+	
+	public void handleNewInvasion(Invasion i) {
+		if(i == null) { return; }
+		
+		for(int j=0;j<m_invasionListeners.size();j++) {
+			m_invasionListeners.elementAt(j).notifyNewInvasion(i);
+		}
+		
+		if(AlertNotifier.filters.filterInvasion(i)) {
+			addFilteredInvasion(i);
+			
+			for(int j=0;j<m_invasionListeners.size();j++) {
+				m_invasionListeners.elementAt(j).notifyFilteredInvasion(i);
+			}
+		}
+	}
+	
 	private void updateAlerts() {
 		try {
 			update(AlertNotifier.settings.alertURL);
@@ -282,7 +625,9 @@ public class AlertMonitor {
 		InputStream in = url.openStream();
 		
 		boolean isHeader = true;
+		String guid = null;
 		String title = null;
+		String type = null;
 		String description = null;
 		String faction = null;
 		String pubTime = null;
@@ -290,6 +635,8 @@ public class AlertMonitor {
 		XMLEvent event = null;
 		XMLInputFactory inputFactory = XMLInputFactory.newInstance();
 		XMLEventReader eventReader = inputFactory.createXMLEventReader(in);
+		Vector<Outbreak> activeOutbreaks = new Vector<Outbreak>();
+		Vector<Invasion> activeInvasions = new Vector<Invasion>();
 
 		while(eventReader.hasNext()) {
 			event = eventReader.nextEvent();
@@ -302,8 +649,14 @@ public class AlertMonitor {
 				}
 				
 				if(!isHeader) {
-					if(localPart.equalsIgnoreCase(TITLE)) {
+					if(localPart.equalsIgnoreCase(GUID)) {
+						guid = getCharacterData(eventReader);
+					}
+					else if(localPart.equalsIgnoreCase(TITLE)) {
 						title = getCharacterData(eventReader);
+					}
+					else if(localPart.equalsIgnoreCase(AUTHOR)) {
+						type = getCharacterData(eventReader);
 					}
 					else if(localPart.equalsIgnoreCase(DESCRIPTION)) {
 						description = getCharacterData(eventReader);
@@ -328,13 +681,42 @@ public class AlertMonitor {
 				String localPart = event.asEndElement().getName().getLocalPart();
 				
 				if(localPart.equalsIgnoreCase(ITEM)) {
-					Alert newAlert;
-					try { newAlert = new Alert(title, description, faction, pubTime, expTime); }
-					catch(IllegalArgumentException e) { throw new MissingDataException("alert is missing information"); }
+					if(type == null) { return false; }
 					
-					addAlert(newAlert);
+					if(type.equalsIgnoreCase(ALERT)) {
+						Alert newAlert = null;
+						try { newAlert = new Alert(guid, title, description, faction, pubTime, expTime); }
+						catch(IllegalArgumentException e) { throw new MissingDataException("alert is missing information"); }
+						
+						addAlert(newAlert);
+					}
+					else if(type.equalsIgnoreCase(OUTBREAK)) {
+						Outbreak newOutbreak = null;
+						try { newOutbreak = new Outbreak(guid, title, pubTime); }
+						catch(IllegalArgumentException e) { throw new MissingDataException("outbreak is missing information"); }
+						
+						addOutbreak(newOutbreak);
+						
+						if(newOutbreak != null) {
+							activeOutbreaks.add(newOutbreak);
+						}
+					}
+					else if(type.equalsIgnoreCase(INVASION)) {
+						Invasion newInvasion = null;
+						try { newInvasion = new Invasion(guid, title, pubTime); }
+						catch(IllegalArgumentException e) { throw new MissingDataException("invasion is missing information"); }
+						catch(InvalidFactionException e) { throw new MissingDataException("invasion has an invalid faction"); }
+
+						addInvasion(newInvasion);
+						
+						if(newInvasion != null) {
+							activeInvasions.add(newInvasion);
+						}
+					}
 					
+					guid = null;
 					title = null;
+					type = null;
 					description = null;
 					faction = null;
 					pubTime = null;
@@ -347,6 +729,18 @@ public class AlertMonitor {
 		
 		try { in.close(); }
 		catch(IOException e) { }
+		
+		for(int i=0;i<m_outbreaks.size();i++) {
+			if(!activeOutbreaks.contains(m_outbreaks.elementAt(i))) {
+				m_outbreaks.elementAt(i).setExpired(true);
+			}
+		}
+		
+		for(int i=0;i<m_invasions.size();i++) {
+			if(!activeInvasions.contains(m_invasions.elementAt(i))) {
+				m_invasions.elementAt(i).setExpired(true);
+			}
+		}
 		
 		return true;
 	}

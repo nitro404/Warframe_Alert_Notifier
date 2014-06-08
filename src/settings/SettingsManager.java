@@ -58,7 +58,7 @@ public class SettingsManager {
 	final public static boolean defaultLogAlerts = false;
 	final public static boolean defaultLogFilteredAlerts = false;
 	final public static boolean defaultLogConsole = false;
-	final public static String defaultAlertURL = "http://content.playwarframe.com/alerts.xml";
+	final public static String defaultAlertURL = "http://content.warframe.com/dynamic/rss.php";
 	final public static int defaultWindowPositionX = 0;
 	final public static int defaultWindowPositionY = 0;
 	final public static int defaultWindowWidth = 800;

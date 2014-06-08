@@ -4,7 +4,6 @@ import java.util.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-
 import alert.*;
 
 public class FilterEditorDialog extends JDialog implements ActionListener, WindowListener, MouseListener {
@@ -36,6 +35,8 @@ public class FilterEditorDialog extends JDialog implements ActionListener, Windo
 	private JMenuItem m_updateFiltersPopupMenuItem;
 	private JMenuItem m_discardFiltersPopupMenuItem;
 	private JMenuItem m_cancelPopupMenuItem;
+	
+	public final static int SCROLL_INCREMENT = 16;
 	
 	private static final long serialVersionUID = 1936808464093046902L;
 	
@@ -73,6 +74,7 @@ public class FilterEditorDialog extends JDialog implements ActionListener, Windo
 		m_creditsPanel.add(m_creditAmountTextField);
 		
 		m_creditsScrollPane = new JScrollPane(m_creditsPanel);
+		m_creditsScrollPane.getVerticalScrollBar().setUnitIncrement(SCROLL_INCREMENT);
 		
 		m_mainTabbedPane.addTab("Credits", null, m_creditsScrollPane, "Displays the credit filter settings for alerts.");
 		
@@ -178,6 +180,7 @@ public class FilterEditorDialog extends JDialog implements ActionListener, Windo
 			m_rewardPanels[i].setLayout(new BoxLayout(m_rewardPanels[i], BoxLayout.PAGE_AXIS));
 			
 			m_rewardScrollPanes[i] = new JScrollPane(m_rewardPanels[i]);
+			m_rewardScrollPanes[i].getVerticalScrollBar().setUnitIncrement(SCROLL_INCREMENT);
 			
 			m_mainTabbedPane.addTab(RewardCategory.displayNames[i], null, m_rewardScrollPanes[i], "Displays rewards from the " + RewardCategory.values()[i].name() + " category.");
 		}

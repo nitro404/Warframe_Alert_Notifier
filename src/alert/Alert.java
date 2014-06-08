@@ -6,7 +6,8 @@ import java.util.*;
 import exception.*;
 
 public class Alert {
-
+	
+	private String m_guid;
 	private String m_title;
 	private String m_location;
 	private String m_planet;
@@ -22,15 +23,16 @@ public class Alert {
 	public static DateFormat ALERT_DATE_FORMAT = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z");
 	public static DateFormat LOG_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss aa");
 
-	public Alert(String title, String description, String factionType, String pubTime, String expTime) throws IllegalArgumentException, NumberFormatException, ParseException, InvalidRewardFormatException {
-		if(title == null) { throw new IllegalArgumentException("title cannot be null"); }
-		if(description == null) { throw new IllegalArgumentException("description cannot be null"); }
-		if(factionType == null) { throw new IllegalArgumentException("faction type cannot be null"); }
-		if(pubTime == null) { throw new IllegalArgumentException("publish time cannot be null"); }
-		if(expTime == null) { throw new IllegalArgumentException("expiry time cannot be null"); }
+	public Alert(String guid, String title, String description, String factionType, String pubTime, String expTime) throws IllegalArgumentException, NumberFormatException, ParseException, InvalidRewardFormatException {
+		if(guid == null) { throw new IllegalArgumentException("alert guid cannot be null"); }
+		if(title == null) { throw new IllegalArgumentException("alert title cannot be null"); }
+		if(description == null) { throw new IllegalArgumentException("alert description cannot be null"); }
+		if(factionType == null) { throw new IllegalArgumentException("alert faction type cannot be null"); }
+		if(pubTime == null) { throw new IllegalArgumentException("alert publish time cannot be null"); }
+		if(expTime == null) { throw new IllegalArgumentException("alert expiry time cannot be null"); }
 
+		m_guid = guid.trim();
 		m_title = title.trim();
-		m_description = description.trim();
 		try {
 			m_factionType = FactionType.parseFrom(factionType);
 		}
@@ -41,30 +43,20 @@ public class Alert {
 		m_expiryTime = Calendar.getInstance();
 		m_publishTime.setTime(ALERT_DATE_FORMAT.parse(pubTime));
 		m_expiryTime.setTime(ALERT_DATE_FORMAT.parse(expTime));
-
-		String[] data = title.split(":", 2);
-		if(data.length != 2) {
-			throw new InvalidRewardFormatException("expected title data to have 2 parts, found " + data.length + " parts: " + data);
-		}
-
-		String[] planetData = data[0].trim().split("[()]");
-		if(planetData.length != 2) {
-			throw new InvalidRewardFormatException("expected planet data to have 2 parts, found " + planetData.length + " parts: " + data[0]);
-		}
-		m_location = planetData[0].trim();
-		m_planet = planetData[1].trim();
-
-		String[] missionData = data[1].split(" - ", 4);
+		
+		String[] missionData = title.split(" - ", 4);
 		if(missionData.length < 3 || missionData.length > 4) {
-			throw new InvalidRewardFormatException("expected mission data to have 3 or 4 parts, found " + missionData.length + " parts: " + data[1]);
+			String msg = "";
+			for(int i=0;i<missionData.length;i++) {
+				msg += missionData[i] + (i < missionData.length - 1 ? ", " : "");
+			}
+			throw new InvalidRewardFormatException("expected alert mission data to have 3 or 4 parts, found " + missionData.length + " parts: " + msg);
 		}
-		m_missionType = missionData[0].trim();
-		m_credits = Integer.parseInt(missionData[2].trim().replaceAll("[^0-9]", ""));
 		
 		m_rewardName = null;
 		m_rewardType = RewardType.None;
 		if(missionData.length > 3) {
-			String[] rewardData = missionData[3].trim().split("[()]");
+			String[] rewardData = missionData[0].trim().split("[()]");
 			if(rewardData.length == 1) {
 				m_rewardName = rewardData[0].trim();
 				m_rewardType = RewardType.Item;
@@ -74,9 +66,28 @@ public class Alert {
 				m_rewardType = RewardType.parseFrom(rewardData[1]);
 			}
 			else {
-				throw new InvalidRewardFormatException("invalid reward format, expected \"Name\" or \"Name (Type)\": " + missionData[3].trim());
+				throw new InvalidRewardFormatException("invalid alert reward format, expected \"Name\" or \"Name (Type)\": " + missionData[0].trim());
 			}
 		}
+		
+		m_credits = Integer.parseInt(missionData[missionData.length > 3 ? 1 : 0].trim().replaceAll("[^0-9]", ""));
+
+		String[] planetData = missionData[missionData.length > 3 ? 2 : 1].trim().split("[()]");
+		if(planetData.length != 2) {
+			String msg = "";
+			for(int i=0;i<planetData.length;i++) {
+				msg += planetData[i] + (i < planetData.length - 1 ? ", " : "");
+			}
+			throw new InvalidRewardFormatException("expected alert planet data to have 2 parts, found " + planetData.length + " parts: " + msg);
+		}
+		m_location = planetData[0].trim();
+		m_planet = planetData[1].trim();
+		
+		m_missionType = description.trim();
+	}
+	
+	public String getGUID() {
+		return m_guid;
 	}
 
 	public String getTitle() {
@@ -98,6 +109,10 @@ public class Alert {
 	public int getCredits() {
 		return m_credits;
 	}
+	
+	public boolean hasReward() {
+		return m_rewardName != null;
+	}
 
 	public String getRewardName() {
 		return m_rewardName;
@@ -105,6 +120,12 @@ public class Alert {
 	
 	public RewardType getRewardType() {
 		return m_rewardType;
+	}
+	
+	public String getRewardInformation() {
+		if(!hasReward()) { return ""; }
+		
+		return m_rewardName + (m_rewardType == RewardType.None || m_rewardType == RewardType.Item ? "" : " (" + m_rewardType.getDisplayName() + ")"); 
 	}
 
 	public String description() {
@@ -126,6 +147,10 @@ public class Alert {
 	public Calendar getExpiryTime() {
 		return m_expiryTime;
 	}
+	
+	public boolean isExpired() {
+		return getTimeLeftInMilliseconds() <= 0L;
+	}
 
 	public long getTotalTimeInMilliseconds() {
 		return m_expiryTime.getTimeInMillis() - m_publishTime.getTimeInMillis();
@@ -133,6 +158,10 @@ public class Alert {
 
 	public long getTimeLeftInMilliseconds() {
 		return Calendar.getInstance().compareTo(m_expiryTime) >= 0 ? 0L : m_expiryTime.getTimeInMillis() - Calendar.getInstance().getTimeInMillis();
+	}
+	
+	public long getTotalTimeDays() {
+	return (getTotalTimeInMilliseconds() / 86400000) % 7;
 	}
 	
 	public long getTotalTimeHours() {
@@ -147,6 +176,10 @@ public class Alert {
 		return (getTotalTimeInMilliseconds() / 1000) % 60;
 	}
 
+	public long getTimeLeftDays() {
+		return (getTimeLeftInMilliseconds() / 86400000) % 7;
+	}
+	
 	public long getTimeLeftHours() {
 		return (getTimeLeftInMilliseconds() / 3600000) % 24;
 	}
@@ -160,25 +193,27 @@ public class Alert {
 	}
 	
 	public String getTotalTimeString() {
+		long days = getTotalTimeDays();
 		long hours = getTotalTimeHours();
 		long minutes = getTotalTimeMinutes();
 		long seconds = getTotalTimeSeconds();
 		
-		return (hours < 10 ? "0" : "") + hours + ":" + (minutes < 10 ? "0" : "") + minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
+		return (days < 10 ? "0" : "") + days + (hours < 10 ? "0" : "") + hours + ":" + (minutes < 10 ? "0" : "") + minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
 	}
 	
 	public String getTimeLeftString() {
+		long days = getTimeLeftDays();
 		long hours = getTimeLeftHours();
 		long minutes = getTimeLeftMinutes();
 		long seconds = getTimeLeftSeconds();
 		
-		return (hours == 0 ? "" : (hours < 10 ? "0" : "") + hours + ":") + (minutes < 10 ? "0" : "") + minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
+		return (days == 0 ? "" : (days < 10 ? "0" : "") + days + ":") + (hours == 0 ? "" : (hours < 10 ? "0" : "") + hours + ":") + (minutes < 10 ? "0" : "") + minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
 	}
 	
 	public boolean writeTo(PrintWriter out) {
 		if(out == null) { return false; }
 		
-		out.println(LOG_DATE_FORMAT.format(m_publishTime.getTime()) + ": " + m_location + " (" + m_planet + "): " + m_missionType + " - " + (getTotalTimeInMilliseconds() / 60000) + "m - " + m_credits + "cr" + (m_rewardName == null ? "" : " - " + m_rewardName + " (" + m_rewardType.toString() + ")"));
+		out.println(LOG_DATE_FORMAT.format(m_publishTime.getTime()) + ": " + toString());
 		
 		return true;
 	}
@@ -186,14 +221,11 @@ public class Alert {
 	public boolean equals(Object o) {
 		if (o == null || !(o instanceof Alert)) { return false; }
 		Alert a = (Alert) o;
-		if (m_title != null && a.m_title != null) {
-			return m_publishTime.equals(a.m_publishTime) && m_title.equalsIgnoreCase(a.m_title);
-		}
-		return false;
+		return m_guid.equals(a.m_guid);
 	}
 
 	public String toString() {
-		return m_title;
+		return m_location + " (" + m_planet + "): " + m_missionType + " - " + m_factionType.getDisplayName() + " - " + (getTotalTimeInMilliseconds() / 60000) + "m - " + m_credits + "cr" + (hasReward() ? " - " + getRewardInformation() : "");
 	}
 
 }

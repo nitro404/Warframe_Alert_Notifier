@@ -13,6 +13,9 @@ public class RewardCollection {
 		new Reward("Orokin Catalyst", RewardType.Blueprint, RewardCategory.ItemBlueprint),
 		new Reward("Forma", RewardType.Blueprint, RewardCategory.ItemBlueprint),
 		
+		// items
+//		new Reward("Forma", RewardType.Item, RewardCategory.ItemBlueprint),
+		
 		// weapon blueprints
 		new Reward("Dagger Axe", RewardType.Blueprint, RewardCategory.WeaponBlueprint),
 		new Reward("Dagger Axe Skin", RewardType.Blueprint, RewardCategory.WeaponBlueprint),
@@ -29,37 +32,43 @@ public class RewardCollection {
 		new Reward("Glaive", RewardType.Blueprint, RewardCategory.WeaponBlueprint),
 		new Reward("Manticore Axe Skin", RewardType.Blueprint, RewardCategory.WeaponBlueprint),
 
-		// series 1 frame helmets
-		new Reward("Scorpion Ash Helmet", RewardType.Blueprint, RewardCategory.HelmetSeries1Blueprint),
-		new Reward("Banshee Helmet", RewardType.Blueprint, RewardCategory.HelmetSeries1Blueprint), // reverb
-		new Reward("Phoenix Ember Helmet", RewardType.Blueprint, RewardCategory.HelmetSeries1Blueprint),
-		new Reward("Avalon Excalibur Helmet", RewardType.Blueprint, RewardCategory.HelmetSeries1Blueprint),
-		new Reward("Aurora Frost Helmet", RewardType.Blueprint, RewardCategory.HelmetSeries1Blueprint),
-		new Reward("Essence Loki Helmet", RewardType.Blueprint, RewardCategory.HelmetSeries1Blueprint),
-		new Reward("Coil Mag Helmet", RewardType.Blueprint, RewardCategory.HelmetSeries1Blueprint),
-		new Reward("Menticide Nyx Helmet", RewardType.Blueprint, RewardCategory.HelmetSeries1Blueprint),
-		new Reward("Thrak Rhino Helmet", RewardType.Blueprint, RewardCategory.HelmetSeries1Blueprint),
-		new Reward("Hemlock Saryn Helmet", RewardType.Blueprint, RewardCategory.HelmetSeries1Blueprint),
-		new Reward("Aura Trinity Helmet", RewardType.Blueprint, RewardCategory.HelmetSeries1Blueprint),
-		new Reward("Esprit Vauban Helmet", RewardType.Blueprint, RewardCategory.HelmetSeries1Blueprint),
-		new Reward("Storm Volt Helmet", RewardType.Blueprint, RewardCategory.HelmetSeries1Blueprint),
-		
-		// series 2 frame helmets
-		new Reward("Locust Ash Helmet", RewardType.Blueprint, RewardCategory.HelmetSeries2Blueprint),
-		new Reward("Chorus Banshee Helmet", RewardType.Blueprint, RewardCategory.HelmetSeries2Blueprint),
-		new Reward("Backdraft Ember Helmet", RewardType.Blueprint, RewardCategory.HelmetSeries2Blueprint),
-		new Reward("Pendragon Excalibur Helmet", RewardType.Blueprint, RewardCategory.HelmetSeries2Blueprint),
-		new Reward("Squall Frost Helmet", RewardType.Blueprint, RewardCategory.HelmetSeries2Blueprint),
-		new Reward("Swindle Loki Helmet", RewardType.Blueprint, RewardCategory.HelmetSeries2Blueprint),
-		new Reward("Gauss Mag Helmet", RewardType.Blueprint, RewardCategory.HelmetSeries2Blueprint),
-		new Reward("Raknis Nekros Helmet", RewardType.Blueprint, RewardCategory.HelmetSeries2Blueprint),
-		new Reward("Flux Nova Helmet", RewardType.Blueprint, RewardCategory.HelmetSeries2Blueprint),
-		new Reward("Vespa Nyx Helmet", RewardType.Blueprint, RewardCategory.HelmetSeries2Blueprint),
-		new Reward("Vanguard Rhino Helmet", RewardType.Blueprint, RewardCategory.HelmetSeries2Blueprint),
-		new Reward("Chlora Saryn Helmet", RewardType.Blueprint, RewardCategory.HelmetSeries2Blueprint),
-		new Reward("Meridian Trinity Helmet", RewardType.Blueprint, RewardCategory.HelmetSeries2Blueprint),
-		new Reward("Gambit Vauban Helmet", RewardType.Blueprint, RewardCategory.HelmetSeries2Blueprint),
-		new Reward("Pulse Volt Helmet", RewardType.Blueprint, RewardCategory.HelmetSeries2Blueprint),
+		// helmet blueprints
+		new Reward("Scorpion Ash Helmet", RewardType.Blueprint, RewardCategory.HelmetBlueprint),
+		new Reward("Locust Ash Helmet", RewardType.Blueprint, RewardCategory.HelmetBlueprint),
+		new Reward("Reverb Banshee Helmet", RewardType.Blueprint, RewardCategory.HelmetBlueprint),
+		new Reward("Chorus Banshee Helmet", RewardType.Blueprint, RewardCategory.HelmetBlueprint),
+		new Reward("Phoenix Ember Helmet", RewardType.Blueprint, RewardCategory.HelmetBlueprint),
+		new Reward("Backdraft Ember Helmet", RewardType.Blueprint, RewardCategory.HelmetBlueprint),
+		new Reward("Avalon Excalibur Helmet", RewardType.Blueprint, RewardCategory.HelmetBlueprint),
+		new Reward("Pendragon Excalibur Helmet", RewardType.Blueprint, RewardCategory.HelmetBlueprint),
+		new Reward("Aurora Frost Helmet", RewardType.Blueprint, RewardCategory.HelmetBlueprint),
+		new Reward("Squall Frost Helmet", RewardType.Blueprint, RewardCategory.HelmetBlueprint),
+		new Reward("Triton Hydroid Helmet", RewardType.Blueprint, RewardCategory.HelmetBlueprint),
+		new Reward("Essence Loki Helmet", RewardType.Blueprint, RewardCategory.HelmetBlueprint),
+		new Reward("Swindle Loki Helmet", RewardType.Blueprint, RewardCategory.HelmetBlueprint),
+		new Reward("Coil Mag Helmet", RewardType.Blueprint, RewardCategory.HelmetBlueprint),
+		new Reward("Gauss Mag Helmet", RewardType.Blueprint, RewardCategory.HelmetBlueprint),
+		new Reward("Raknis Nekros Helmet", RewardType.Blueprint, RewardCategory.HelmetBlueprint),
+		new Reward("Shroud Nekros Helmet", RewardType.Blueprint, RewardCategory.HelmetBlueprint),
+		new Reward("Flux Nova Helmet", RewardType.Blueprint, RewardCategory.HelmetBlueprint),
+		new Reward("Quantum Nova Helmet", RewardType.Blueprint, RewardCategory.HelmetBlueprint),
+		new Reward("Menticide Nyx Helmet", RewardType.Blueprint, RewardCategory.HelmetBlueprint),
+		new Reward("Vespa Nyx Helmet", RewardType.Blueprint, RewardCategory.HelmetBlueprint),
+		new Reward("Oryx Oberon Helmet", RewardType.Blueprint, RewardCategory.HelmetBlueprint),
+		new Reward("Markhor Oberon Helmet", RewardType.Blueprint, RewardCategory.HelmetBlueprint),
+		new Reward("Thrak Rhino Helmet", RewardType.Blueprint, RewardCategory.HelmetBlueprint),
+		new Reward("Vanguard Rhino Helmet", RewardType.Blueprint, RewardCategory.HelmetBlueprint),
+		new Reward("Hemlock Saryn Helmet", RewardType.Blueprint, RewardCategory.HelmetBlueprint),
+		new Reward("Chlora Saryn Helmet", RewardType.Blueprint, RewardCategory.HelmetBlueprint),
+		new Reward("Aura Trinity Helmet", RewardType.Blueprint, RewardCategory.HelmetBlueprint),
+		new Reward("Meridian Trinity Helmet", RewardType.Blueprint, RewardCategory.HelmetBlueprint),
+		new Reward("Bastet Valkyr Helmet", RewardType.Blueprint, RewardCategory.HelmetBlueprint),
+		new Reward("Kara Valkyr Helmet", RewardType.Blueprint, RewardCategory.HelmetBlueprint),
+		new Reward("Esprit Vauban Helmet", RewardType.Blueprint, RewardCategory.HelmetBlueprint),
+		new Reward("Gambit Vauban Helmet", RewardType.Blueprint, RewardCategory.HelmetBlueprint),
+		new Reward("Storm Volt Helmet", RewardType.Blueprint, RewardCategory.HelmetBlueprint),
+		new Reward("Pulse Volt Helmet", RewardType.Blueprint, RewardCategory.HelmetBlueprint),
+		new Reward("Cierzo Zephyr Helmet", RewardType.Blueprint, RewardCategory.HelmetBlueprint),
 		
 		// vauban frame blueprints
 		new Reward("Vauban Helmet", RewardType.Blueprint, RewardCategory.VaubanBlueprint),
@@ -81,6 +90,8 @@ public class RewardCollection {
 		new Reward("Rifle Amp", RewardType.Aura, RewardCategory.Aura),
 		new Reward("Steel Charge", RewardType.Aura, RewardCategory.Aura),
 		new Reward("Speed Holster", RewardType.Aura, RewardCategory.Aura),
+		new Reward("Dead Eye", RewardType.Aura, RewardCategory.Aura),
+		new Reward("Sprint Boost", RewardType.Aura, RewardCategory.Aura),
 		
 		// nightmare mods
 		new Reward("Constitution", RewardType.Mod, RewardCategory.NightmareMod),
@@ -112,6 +123,11 @@ public class RewardCollection {
 		new Reward("Salvage", RewardType.Resource, RewardCategory.Resource),
 		new Reward("Plastids", RewardType.Resource, RewardCategory.Resource),
 		new Reward("Polymer Bundle", RewardType.Resource, RewardCategory.Resource),
+		
+		// clan tech
+		new Reward("Detonite Injector", RewardType.Item, RewardCategory.ClanTech),
+		new Reward("Fieldron", RewardType.Item, RewardCategory.ClanTech),
+		new Reward("Mutagen Mass", RewardType.Item, RewardCategory.ClanTech),
 		
 		// event
 		new Reward("Corpus Cipher", RewardType.Event, RewardCategory.Event),
@@ -296,7 +312,7 @@ public class RewardCollection {
 			
 			if(i != 0) { out.println(); }
 			
-			out.println("[" + RewardType.values()[i].name() + "]");
+			out.println("[" + RewardType.values()[i].getDisplayName() + "]");
 			
 			for(int j=0;j<m_rewards.size();j++) {
 				if(m_rewards.elementAt(j).getType() == RewardType.values()[i]) {
