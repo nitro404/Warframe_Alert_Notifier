@@ -14,7 +14,9 @@ public class RewardCollection {
 		new Reward("Forma", RewardType.Blueprint, RewardCategory.ItemBlueprint),
 		
 		// items
-//		new Reward("Forma", RewardType.Item, RewardCategory.ItemBlueprint),
+//		new Reward("Orokin Reactor", RewardType.Item, RewardCategory.Item),
+//		new Reward("Orokin Catalyst", RewardType.Item, RewardCategory.Item),
+//		new Reward("Forma", RewardType.Item, RewardCategory.Item),
 		
 		// weapon blueprints
 		new Reward("Dagger Axe", RewardType.Blueprint, RewardCategory.WeaponBlueprint),
@@ -110,6 +112,7 @@ public class RewardCollection {
 		
 		// resources
 		new Reward("Alloy Plate", RewardType.Resource, RewardCategory.Resource),
+		new Reward("Argon Crystal", RewardType.Resource, RewardCategory.Resource),
 		new Reward("Control Module", RewardType.Resource, RewardCategory.Resource),
 		new Reward("Circuits", RewardType.Resource, RewardCategory.Resource),
 		new Reward("Ferrite", RewardType.Resource, RewardCategory.Resource),
@@ -121,6 +124,7 @@ public class RewardCollection {
 		new Reward("Orokin Cell", RewardType.Resource, RewardCategory.Resource),
 		new Reward("Rubedo", RewardType.Resource, RewardCategory.Resource),
 		new Reward("Salvage", RewardType.Resource, RewardCategory.Resource),
+		new Reward("Oxium Alloy", RewardType.Resource, RewardCategory.Resource),
 		new Reward("Plastids", RewardType.Resource, RewardCategory.Resource),
 		new Reward("Polymer Bundle", RewardType.Resource, RewardCategory.Resource),
 		
@@ -131,7 +135,10 @@ public class RewardCollection {
 		
 		// event
 		new Reward("Corpus Cipher", RewardType.Event, RewardCategory.Event),
-		new Reward("Corpus Datamass", RewardType.Event, RewardCategory.Event)
+		new Reward("Corpus Datamass", RewardType.Event, RewardCategory.Event),
+
+		// misc
+		new Reward("R5 Fusion Core Pack", RewardType.Item, RewardCategory.Item),
 	}));
 	
 	public RewardCollection() {

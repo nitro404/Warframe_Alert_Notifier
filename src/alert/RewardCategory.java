@@ -2,7 +2,7 @@ package alert;
 
 public enum RewardCategory {
 	ItemBlueprint,
-//	Item,
+	Item,
 	WeaponBlueprint,
 	HelmetBlueprint,
 	VaubanBlueprint,
@@ -15,7 +15,7 @@ public enum RewardCategory {
 	
 	final public static String[] displayNames = {
 		"Item Blueprint",
-//		"Item",
+		"Item",
 		"Weapon Blueprint",
 		"Helmet Blueprint",
 		"Vauban Blueprint",
