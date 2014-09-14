@@ -46,10 +46,12 @@ public class RewardCollection {
 		new Reward("Aurora Frost Helmet", RewardType.Blueprint, RewardCategory.HelmetBlueprint),
 		new Reward("Squall Frost Helmet", RewardType.Blueprint, RewardCategory.HelmetBlueprint),
 		new Reward("Triton Hydroid Helmet", RewardType.Blueprint, RewardCategory.HelmetBlueprint),
+		new Reward("Ketos Hydroid Helmet", RewardType.Blueprint, RewardCategory.HelmetBlueprint),
 		new Reward("Essence Loki Helmet", RewardType.Blueprint, RewardCategory.HelmetBlueprint),
 		new Reward("Swindle Loki Helmet", RewardType.Blueprint, RewardCategory.HelmetBlueprint),
 		new Reward("Coil Mag Helmet", RewardType.Blueprint, RewardCategory.HelmetBlueprint),
 		new Reward("Gauss Mag Helmet", RewardType.Blueprint, RewardCategory.HelmetBlueprint),
+		new Reward("Harlequin Mirage Helmet", RewardType.Blueprint, RewardCategory.HelmetBlueprint),
 		new Reward("Raknis Nekros Helmet", RewardType.Blueprint, RewardCategory.HelmetBlueprint),
 		new Reward("Shroud Nekros Helmet", RewardType.Blueprint, RewardCategory.HelmetBlueprint),
 		new Reward("Flux Nova Helmet", RewardType.Blueprint, RewardCategory.HelmetBlueprint),
@@ -71,6 +73,7 @@ public class RewardCollection {
 		new Reward("Storm Volt Helmet", RewardType.Blueprint, RewardCategory.HelmetBlueprint),
 		new Reward("Pulse Volt Helmet", RewardType.Blueprint, RewardCategory.HelmetBlueprint),
 		new Reward("Cierzo Zephyr Helmet", RewardType.Blueprint, RewardCategory.HelmetBlueprint),
+		new Reward("Tengu Zephyr Helmet", RewardType.Blueprint, RewardCategory.HelmetBlueprint),
 		
 		// vauban frame blueprints
 		new Reward("Vauban Helmet", RewardType.Blueprint, RewardCategory.VaubanBlueprint),
@@ -110,11 +113,30 @@ public class RewardCollection {
 		new Reward("Rending Strike", RewardType.Mod, RewardCategory.NightmareMod),
 		new Reward("Vigor", RewardType.Mod, RewardCategory.NightmareMod),
 		
+		// corrupt mods
+		new Reward("Blind Rage", RewardType.Mod, RewardCategory.CorruptMod),
+		new Reward("Burdened Magazine", RewardType.Mod, RewardCategory.CorruptMod),
+		new Reward("Corrupt Charge", RewardType.Mod, RewardCategory.CorruptMod),
+		new Reward("Critical Delay", RewardType.Mod, RewardCategory.CorruptMod),
+		new Reward("Fleeting Expertise", RewardType.Mod, RewardCategory.CorruptMod),
+		new Reward("Heavy Caliber", RewardType.Mod, RewardCategory.CorruptMod),
+		new Reward("Hollow Point", RewardType.Mod, RewardCategory.CorruptMod),
+		new Reward("Magnum Force", RewardType.Mod, RewardCategory.CorruptMod),
+		new Reward("Narrow Minded", RewardType.Mod, RewardCategory.CorruptMod),
+		new Reward("Overextended", RewardType.Mod, RewardCategory.CorruptMod),
+		new Reward("Spoiled Strike", RewardType.Mod, RewardCategory.CorruptMod),
+		new Reward("Tainted Clip", RewardType.Mod, RewardCategory.CorruptMod),
+		new Reward("Tainted Mag", RewardType.Mod, RewardCategory.CorruptMod),
+		new Reward("Tainted Shell", RewardType.Mod, RewardCategory.CorruptMod),
+		new Reward("Vicious Spread", RewardType.Mod, RewardCategory.CorruptMod),
+		new Reward("Vile Precision", RewardType.Mod, RewardCategory.CorruptMod),
+		
 		// resources
 		new Reward("Alloy Plate", RewardType.Resource, RewardCategory.Resource),
 		new Reward("Argon Crystal", RewardType.Resource, RewardCategory.Resource),
 		new Reward("Control Module", RewardType.Resource, RewardCategory.Resource),
 		new Reward("Circuits", RewardType.Resource, RewardCategory.Resource),
+		new Reward("Cryotic", RewardType.Resource, RewardCategory.Resource),
 		new Reward("Ferrite", RewardType.Resource, RewardCategory.Resource),
 		new Reward("Gallium", RewardType.Resource, RewardCategory.Resource),
 		new Reward("Morphics", RewardType.Resource, RewardCategory.Resource),
@@ -132,6 +154,18 @@ public class RewardCollection {
 		new Reward("Detonite Injector", RewardType.Item, RewardCategory.ClanTech),
 		new Reward("Fieldron", RewardType.Item, RewardCategory.ClanTech),
 		new Reward("Mutagen Mass", RewardType.Item, RewardCategory.ClanTech),
+		
+		// kubrow
+		new Reward("Kubrow Egg", RewardType.Item, RewardCategory.Kubrow),
+		new Reward("Bite", RewardType.Mod, RewardCategory.Kubrow),
+		new Reward("Fast Deflection", RewardType.Mod, RewardCategory.Kubrow),
+		new Reward("Link Armor", RewardType.Mod, RewardCategory.Kubrow),
+		new Reward("Link Health", RewardType.Mod, RewardCategory.Kubrow),
+		new Reward("Link Shields", RewardType.Mod, RewardCategory.Kubrow),
+		new Reward("Loyal Companion", RewardType.Mod, RewardCategory.Kubrow),
+		new Reward("Maul", RewardType.Mod, RewardCategory.Kubrow),
+		new Reward("Pack Leader", RewardType.Mod, RewardCategory.Kubrow),
+		new Reward("Scavenge", RewardType.Mod, RewardCategory.Kubrow),
 		
 		// event
 		new Reward("Corpus Cipher", RewardType.Event, RewardCategory.Event),

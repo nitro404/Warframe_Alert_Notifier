@@ -8,8 +8,10 @@ public enum RewardCategory {
 	VaubanBlueprint,
 	Aura,
 	NightmareMod,
+	CorruptMod,
 	Resource,
 	ClanTech,
+	Kubrow,
 	Event,
 	Custom;
 	
@@ -21,8 +23,10 @@ public enum RewardCategory {
 		"Vauban Blueprint",
 		"Aura",
 		"Nightmare Mod",
+		"Corrupt Mod",
 		"Resource",
 		"Clan Tech",
+		"Kubrow",
 		"Event",
 		"Custom"
 	};
