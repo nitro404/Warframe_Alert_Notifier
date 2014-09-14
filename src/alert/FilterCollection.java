@@ -281,11 +281,18 @@ public class FilterCollection {
 				if(data.matches("^\\[.+\\]$")) {
 					int startIndex = data.indexOf('[');
 					int endIndex = data.indexOf(']');
-					if(startIndex >= endIndex) { return false; }
+					if(startIndex >= endIndex) {
+						in.close();
+						
+						return false;
+					}
 					
 					String tempType = data.substring(startIndex + 1, endIndex).trim();
 					if(tempType.length() == 0) {
 						AlertNotifier.console.writeLine("Empty filter type header encountered while parsing filter list file: " + AlertNotifier.settings.filterListFileName);
+						
+						in.close();
+						
 						return false;
 					}
 					
@@ -294,6 +301,9 @@ public class FilterCollection {
 					}
 					catch(InvalidFilterException e) {
 						AlertNotifier.console.writeLine("Invalid filter type header: \"" + tempType + "\" encountered while parsing filter list file: " + AlertNotifier.settings.filterListFileName);
+						
+						in.close();
+						
 						return false;
 					}
 					
@@ -302,7 +312,11 @@ public class FilterCollection {
 				
 				if(filterType == FilterType.Credits) {
 					String parts[] = parseParts(data);
-					if(parts == null) { return false; }
+					if(parts == null) {
+						in.close();
+						
+						return false;
+					}
 					
 					if(parts[0].equalsIgnoreCase("Filter Credits")) {
 						if(parts[1].equalsIgnoreCase("true")) {

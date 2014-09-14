@@ -301,11 +301,18 @@ public class RewardCollection {
 				if(data.matches("^\\[.+\\]$")) {
 					int startIndex = data.indexOf('[');
 					int endIndex = data.indexOf(']');
-					if(startIndex >= endIndex) { return false; }
+					if(startIndex >= endIndex) {
+						in.close();
+						
+						return false;
+					}
 					
 					String tempType = data.substring(startIndex + 1, endIndex).trim();
 					if(tempType.length() == 0) {
 						AlertNotifier.console.writeLine("Empty header encountered while parsing reward list file: " + AlertNotifier.settings.rewardListFileName);
+						
+						in.close();
+						
 						return false;
 					}
 					

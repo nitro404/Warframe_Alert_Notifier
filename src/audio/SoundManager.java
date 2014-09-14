@@ -166,17 +166,27 @@ public class SoundManager {
 					if(data.matches("^\\[.+\\]$")) {
 						int startIndex = data.indexOf('[');
 						int endIndex = data.indexOf(']');
-						if(startIndex >= endIndex) { return false; }
+						if(startIndex >= endIndex) {
+							in.close();
+							
+							return false;
+						}
 						
 						String tempType = data.substring(startIndex + 1, endIndex).trim();
 						
 						if(tempType.length() == 0) {
 							AlertNotifier.console.writeLine("Empty header encountered while parsing sound list file: " + AlertNotifier.settings.soundListFileName);
+							
+							in.close();
+							
 							return false;
 						}
 						
 						if(!tempType.equalsIgnoreCase("Sounds")) {
 							AlertNotifier.console.writeLine("Invalid header: \"" + tempType + "\" encountered while parsing sound list file: " + AlertNotifier.settings.soundListFileName);
+							
+							in.close();
+							
 							return false;
 						}
 						
@@ -191,7 +201,11 @@ public class SoundManager {
 				}
 				else {
 					String[] parts = data.replaceAll("([\n\r]+|^[\t ]+|[\t ]+$)", "").split("[\t ]*[:=][\t ]*", 2);
-					if(parts.length != 2) { return false; }
+					if(parts.length != 2) {
+						in.close();
+						
+						return false;
+					}
 					
 					if(parts[0].equalsIgnoreCase("Sound Name")) {
 						if(soundName != null) {

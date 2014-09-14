@@ -12,7 +12,7 @@ public class FilterEditorDialog extends JDialog implements ActionListener, Windo
 	private JScrollPane m_creditsScrollPane;
 	private JPanel m_creditsPanel;
 	private JCheckBox m_filterCreditsCheckBox;
-	private JComboBox m_filterCreditsComparisonOperatorComboBox;
+	private JComboBox<String> m_filterCreditsComparisonOperatorComboBox;
 	private JLabel m_creditAmountLabel;
 	private JTextField m_creditAmountTextField;
 	private JScrollPane[] m_rewardScrollPanes;
@@ -62,7 +62,7 @@ public class FilterEditorDialog extends JDialog implements ActionListener, Windo
 		m_creditsPanel.addMouseListener(this);
 		
 		m_filterCreditsCheckBox = new JCheckBox("Filter Credits");
-		m_filterCreditsComparisonOperatorComboBox = new JComboBox(ComparisonOperatorType.operatorValues);
+		m_filterCreditsComparisonOperatorComboBox = new JComboBox<String>(ComparisonOperatorType.operatorValues);
 		m_filterCreditsComparisonOperatorComboBox.setSelectedIndex(ComparisonOperatorType.defaultOperator.ordinal());
 		m_creditAmountLabel = new JLabel("Credit Amount:");
 		m_creditAmountTextField = new JTextField();
