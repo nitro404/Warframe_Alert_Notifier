@@ -97,6 +97,7 @@ public class RewardCollection {
 		new Reward("Speed Holster", RewardType.Aura, RewardCategory.Aura),
 		new Reward("Dead Eye", RewardType.Aura, RewardCategory.Aura),
 		new Reward("Sprint Boost", RewardType.Aura, RewardCategory.Aura),
+		new Reward("Loot Detector", RewardType.Aura, RewardCategory.Aura),
 		
 		// nightmare mods
 		new Reward("Constitution", RewardType.Mod, RewardCategory.NightmareMod),
