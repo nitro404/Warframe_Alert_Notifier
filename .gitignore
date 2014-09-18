@@ -2,6 +2,7 @@
 /Documents
 /Logs
 /Release
+*.jar
 Filters.cfg
 Rewards.cfg
 Settings.cfg
