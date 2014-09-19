@@ -8,7 +8,7 @@ import utilities.*;
 
 public class SettingsManager {
 	
-	private VariableSystem m_settings;
+	private VariableCollection m_settings;
 	
 	public String settingsFileName = defaultSettingsFileName;
 	public boolean autoSaveSettings;
@@ -74,7 +74,7 @@ public class SettingsManager {
 	final public static float maximumVolume = 5.0f;
 	
 	public SettingsManager() {
-		m_settings = new VariableSystem();
+		m_settings = new VariableCollection();
 		reset();
 	}
 	
@@ -114,7 +114,7 @@ public class SettingsManager {
 	public boolean save() { return saveTo(settingsFileName); }
 	
 	public boolean loadFrom(String fileName) {
-		VariableSystem variables = VariableSystem.readFrom(fileName);
+		VariableCollection variables = VariableCollection.readFrom(fileName);
 		if(variables == null) { return false; }
 		
 		m_settings = variables;
