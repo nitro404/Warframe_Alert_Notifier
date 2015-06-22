@@ -2,10 +2,41 @@ package utilities;
 
 import java.awt.*;
 import java.io.*;
+import java.nio.file.*;
 
 public class Utilities {
 	
-	private Utilities() { }
+	private Utilities() {
+		
+	}
+	
+	public static int randomInteger(int min, int max) {
+		if(max <= min) { return min; }
+		
+		return (int) (Math.random() * (max - min + 1)) + min;
+	}
+
+	public static float randomFloat(float min, float max) {
+		if(max <= min) { return min; }
+		
+		return (float) (Math.random() * (max - min)) + min;
+	}
+	
+	public static int byteLength(byte n) {
+		return n < 0 ? n < -99 ? 4 : n < -9 ? 3 : 2 : n < 10 ? 1 : n < 100 ? 2 : 3;
+	}
+
+	public static int shortLength(short n) {
+		return n < 0 ? n < -99 ? n < -9999 ? 6 : n < -999 ? 5 : 4 : n < -9 ? 3 : 2 : n < 100 ? n < 10 ? 1 : 2 : n < 1000 ? 3 : n < 10000 ? 4 : 5;
+	}
+
+	public static int intLength(int n) {
+		return n < 0 ? n < -999999 ? n < -99999999 ? n < -999999999 ? 11 : 10 : n < -9999999 ? 9 : 8 : n < -999 ? n < -99999 ? 7 : n < -9999 ? 6 : 5 : n < -99 ? 4 : n < -9 ? 3 : 2 : n < 100000 ? n < 100 ? n < 10 ? 1 : 2 : n < 1000 ? 3 : n < 10000 ? 4 : 5 : n < 10000000 ? n < 1000000 ? 6 : 7 : n < 100000000 ? 8 : n < 1000000000 ? 9 : 10;
+	}
+
+	public static int longLength(long n) {
+		return n < 0 ? n < -999999999L ? n < -99999999999999L ? n < -9999999999999999L ? n < -999999999999999999L ? 20 : n < -99999999999999999L ? 19 : 18 : n < -999999999999999L ? 17 : 16 : n < -99999999999L ? n < -9999999999999L ? 15 : n < -999999999999L ? 14 : 13 : n < -9999999999L ? 12 : 11 : n < -9999L ? n < -999999L ? n < -99999999L ? 10 : n < -9999999L ? 9 : 8 : n < -99999L ? 7 : 6 : n < -99L ? n < -999L ? 5 : 4 : n < -9L ? 3 : 2 : n < 1000000000L ? n < 10000L ? n < 100L ? n < 10L ? 1 : 2 : n < 1000L ? 3 : 4 : n < 10000000L ? n < 100000L ? 5 : n < 1000000L ? 6 : 7 : n < 100000000L ? 8 : 9 : n < 100000000000000L ? n < 1000000000000L ? n < 100000000000L ? n < 10000000000L ? 10 : 11 : 12 : n < 10000000000000L ? 13 : 14 : n < 100000000000000000L ? n < 10000000000000000L ? n < 1000000000000000L ? 15 : 16 : 17 : n < 1000000000000000000L ? 18 : 19;
+	}
 	
 	public static Point parsePoint(String data) {
 		if(data == null) { return null; }
@@ -79,13 +110,27 @@ public class Utilities {
 		return upper - lower;
 	}
 	
+	public static String reverseString(String data) {
+		if(data == null) { return null; }
+		
+		String reverse = "";
+		
+		for(int i=0;i<data.length();i++) {
+			reverse += data.charAt(data.length() - i - 1);
+		}
+		
+		return reverse;
+	}
+	
 	public static String getFileNameNoExtension(String fileName) {
 		if(fileName == null) { return null; }
 		
 		int index = fileName.lastIndexOf('.');
-		if(index > 0) {
+		
+		if(index >= 0) {
 			return fileName.substring(0, index);
 		}
+		
 		return fileName;
 	}
 	
@@ -93,9 +138,11 @@ public class Utilities {
 		if(fileName == null) { return null; }
 		
 		int index = fileName.lastIndexOf('.');
-		if(index > 0) {
+		
+		if(index >= 0) {
 			return fileName.substring(index + 1, fileName.length());
 		}
+		
 		return null;
 	}
 	
@@ -104,6 +151,39 @@ public class Utilities {
 		
 		String actualFileExtension = getFileExtension(fileName);
 		return actualFileExtension != null && actualFileExtension.equalsIgnoreCase(fileExtension);
+	}
+
+	public static String reverseFileExtension(String fileName) {
+		if(fileName == null) { return null; }
+		
+		int index = fileName.lastIndexOf('.');
+		
+		if(index >= 0) {
+			return fileName.substring(0, index) + "." + reverseString(fileName.substring(index + 1, fileName.length()));
+		}
+		
+		return fileName;
+	}
+	
+	public static String getFileNameNoPath(String filePath) {
+		if(filePath == null) { return null; }
+		
+		String formattedFilePath = filePath.trim();
+		if(formattedFilePath.length() == 0) { return null; }
+		
+		int lastFileSeparatorIndex = -1;
+		for(int i=formattedFilePath.length()-1;i>=0;i--) {
+			if(formattedFilePath.charAt(i) == '/' || formattedFilePath.charAt(i) == '\\') {
+				lastFileSeparatorIndex = i;
+				break;
+			}
+		}
+		
+		if(lastFileSeparatorIndex != -1) {
+			return formattedFilePath.substring(lastFileSeparatorIndex + 1, formattedFilePath.length());
+		}
+		
+		return filePath;
 	}
 	
 	public static String getFilePath(File file) {
@@ -117,23 +197,31 @@ public class Utilities {
 			path = file.getAbsolutePath();
 		}
 		
-		int index = -1;
-		for(int i=path.length() - 1;i>=0;i--) {
-			if(path.charAt(i) == '/' || path.charAt(i) == '\\') {
-				index = i;
-				break;
+		if(file.isFile()) {
+			int index = -1;
+			for(int i=path.length() - 1;i>=0;i--) {
+				if(path.charAt(i) == '/' || path.charAt(i) == '\\') {
+					index = i;
+					break;
+				}
+			}
+			
+			if(index >= 0) {
+				path = path.substring(0, index + 1);
 			}
 		}
 		
-		if(index >= 0) {
-			path = path.substring(0, index + 1);
-		}
-		
 		if(path.charAt(path.length() - 1) != '/' && path.charAt(path.length() - 1) != '\\') {
-			path += "/";
+			path += System.getProperty("file.separator");
 		}
 		
 		return path;
+	}
+	
+	public static String getRelativizedPath(String currentPath, String basePath) {
+		if(currentPath == null || basePath == null) { return null; }
+		
+		return Paths.get(new File(basePath).getAbsolutePath()).relativize(Paths.get(new File(currentPath).getAbsolutePath())).toString();
 	}
 	
 	public static String appendSlash(String path) {
@@ -142,10 +230,38 @@ public class Utilities {
 		if(data.length() == 0) { return data; }
 		
 		if(data.charAt(data.length() - 1) != '/' && data.charAt(data.length() - 1) != '\\') {
-			data  += "/";
+			data  += System.getProperty("file.separator");
 		}
 		
 		return data;
+	}
+	
+	public static String truncateFileName(String fileName, int maxLength) {
+		if(fileName == null) { return null; }
+		if(maxLength < 0) { return null; }
+		if(maxLength == 0) { return ""; }
+		
+		String formattedFileName = fileName.trim();
+		
+		if(formattedFileName.length() > maxLength) {
+			int index = formattedFileName.lastIndexOf('.');
+			
+			String extension = "";
+			String originalFileName = fileName;
+			
+			if(index >= 0) {
+				extension = fileName.substring(index + 1, fileName.length());
+				originalFileName = fileName.substring(0, index);
+			}
+			
+			if(maxLength - (extension.length() + (extension.length() > 0 ? 1 : 0)) < 1) {
+				return originalFileName.substring(0, originalFileName.length() >= maxLength ? maxLength : originalFileName.length()); 
+			}
+			
+			return originalFileName.substring(0, maxLength - extension.length() - (extension.length() > 0 ? 1 : 0)) + (extension.length() > 0 ? "." + extension : "");
+		}
+		
+		return formattedFileName;
 	}
 	
 	public static int compareVersions(String v1, String v2) {
@@ -205,6 +321,55 @@ public class Utilities {
 			
 			index++;
 		}
+	}
+	
+	public static boolean isComment(String data) {
+		return isComment(data, "//");
+	}
+	
+	public static boolean isComment(String data, String comment) {
+		if(data == null || comment == null || comment.length() == 0) { return false; }
+		
+		int commentStartIndex = -1;
+		for(int i=0;i<data.length();i++) {
+			if(data.charAt(i) == ' ' || data.charAt(i) == '\t') { continue; }
+			
+			if(data.charAt(i) == comment.charAt(0)) {
+				commentStartIndex = i;
+				break;
+			}
+			else {
+				return false;
+			}
+		}
+		
+		if(commentStartIndex < 0 || data.length() - commentStartIndex < comment.length()) { return false; }
+		
+		for(int i=commentStartIndex;i<data.length();i++) {
+			if(i - commentStartIndex >= comment.length()) { break; }
+			
+			if(data.charAt(i) != comment.charAt(i - commentStartIndex)) {
+				return false;
+			}
+		}
+		
+		return true;
+	}
+	
+	public static byte[] getResourceBytes(String resourcePath) {
+		if(resourcePath == null) { return null; }
+		InputStream in = null;
+		byte data[] = null;
+		try {
+			in = System.class.getResourceAsStream(resourcePath);
+			if(in == null) { return null; }
+			data = new byte[in.available()];
+			in.read(data);
+			in.close();
+		}
+		catch(FileNotFoundException e) { return null; }
+		catch(IOException e) { return null; }
+		return data;
 	}
 	
 }
