@@ -1,7 +1,7 @@
 Warframe Alert Notifier
 
 Version
-  1.1.1
+  1.1.2
 
 Release Date
   Current: April 28, 2014
@@ -17,7 +17,7 @@ Website
   http://www.nitro404.com/programming/warframe_alert_notifier.php
 
 Requirements
-  Java 1.6 Runtime Environment
+  Java Runtime Environment (Version 1.6 or newer)
 
 How to Use
   Simply open "Warframe Alert Notifier.jar" to run the program. All required configuration files
