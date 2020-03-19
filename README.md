@@ -1,5 +1,7 @@
 # Warframe Alert Notifier 1.1.2
 
+**This project is no longer updated, maintained or compatible with the current alert format.**
+
 ## Description
 A highly customizable alert notifier for Warframe.
 
